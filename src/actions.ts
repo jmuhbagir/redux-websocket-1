@@ -1,5 +1,6 @@
 import actionCreatorFactory from 'typescript-fsa';
-import { Config } from './config';
+import { ConnectOptions } from './ConnectOptions';
+import { DisconnectOptions } from './DisconnectOptions';
 
 const actionCreator = actionCreatorFactory();
 
@@ -11,8 +12,8 @@ export const websocketClosedAction = actionCreator<Event>('WEBSOCKET_CLOSED');
 
 export const websocketMessageAction = actionCreator<MessageEvent>('WEBSOCKET_MESSAGE');
 
-export const websocketConnectAction = actionCreator<Config>('WEBSOCKET_CONNECT');
+export const websocketConnectAction = actionCreator<ConnectOptions>('WEBSOCKET_CONNECT');
 
-export const websocketDisconnectAction = actionCreator<boolean | undefined>('WEBSOCKET_DISCONNECT');
+export const websocketDisconnectAction = actionCreator<DisconnectOptions>('WEBSOCKET_DISCONNECT');
 
 export const websocketSendAction = actionCreator<any>('WEBSOCKET_SEND');

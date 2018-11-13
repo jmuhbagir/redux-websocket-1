@@ -1,6 +1,7 @@
 import websocket, { closeConnection } from './websocket';
+import { DisconnectOptions } from './DisconnectOptions';
 
-export default (notifyOnClose: boolean = true) => {
+export default ({ notifyOnClose = true }: DisconnectOptions = {}) => {
   if (websocket) {
     if (!notifyOnClose) {
       websocket.onclose = null;

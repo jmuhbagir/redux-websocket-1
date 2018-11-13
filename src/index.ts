@@ -10,7 +10,9 @@ import close from './close';
 import send from './send';
 
 export * from './actions';
-export * from './config';
+export * from './Config';
+export * from './ConnectOptions';
+export * from './DisconnectOptions';
 
 const createMiddleware = (): Middleware => store => next => action => {
   if (isType(action, websocketConnectAction)) initialize(store.dispatch, action.payload);

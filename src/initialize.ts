@@ -1,5 +1,5 @@
 import { compose } from 'redux';
-import { Config } from './config';
+import { Config } from './Config';
 import close from './close';
 import {
   websocketConnectingAction,
