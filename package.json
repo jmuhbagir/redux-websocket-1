@@ -1,6 +1,6 @@
 {
   "name": "@jussikinnula/redux-websocket",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A redux middleware to handle websocket connections",
   "author": "Jussi Kinnula",
   "license": "MIT",
@@ -31,24 +31,16 @@
   "keywords": [
     "redux"
   ],
-  "dependencies": {
-    "@types/lodash": "^4.14.118",
-    "lodash": "^4.17.11"
-  },
   "peerDependencies": {
-    "@types/ws": "^6.0.1",
     "redux": "^4.0.1",
-    "typescript-fsa": "^3.0.0-beta-2",
-    "ws": "^6.1.0"
+    "typescript-fsa": "^3.0.0-beta-2"
   },
   "devDependencies": {
-    "@types/ws": "^6.0.1",
     "redux": "^4.0.1",
     "rimraf": "^2.6.2",
     "tslint": "^5.11.0",
     "tslint-config-airbnb": "^5.11.0",
     "typescript": "^3.1.6",
-    "typescript-fsa": "^3.0.0-beta-2",
-    "ws": "^6.1.0"
+    "typescript-fsa": "^3.0.0-beta-2"
   }
 }

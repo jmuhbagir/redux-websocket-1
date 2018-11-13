@@ -3,7 +3,7 @@ import { Config } from './config';
 
 const actionCreator = actionCreatorFactory();
 
-export const connecting = actionCreator<Event>('WEBSOCKET_CONNECTING');
+export const connecting = actionCreator<void>('WEBSOCKET_CONNECTING');
 
 export const open = actionCreator<Event>('WEBSOCKET_OPEN');
 
