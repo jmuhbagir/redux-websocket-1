@@ -13,6 +13,6 @@ export const websocketMessageAction = actionCreator<MessageEvent>('WEBSOCKET_MES
 
 export const websocketConnectAction = actionCreator<Config>('WEBSOCKET_CONNECT');
 
-export const websocketDisconnectAction = actionCreator<boolean>('WEBSOCKET_DISCONNECT');
+export const websocketDisconnectAction = actionCreator<boolean | undefined>('WEBSOCKET_DISCONNECT');
 
 export const websocketSendAction = actionCreator<any>('WEBSOCKET_SEND');

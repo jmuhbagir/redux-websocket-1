@@ -1,13 +1,13 @@
 {
   "name": "@jussikinnula/redux-websocket",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A redux middleware to handle websocket connections",
   "author": "Jussi Kinnula",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/jussikinnula/redux-websocket/issues"
   },
-  "homepage": "https://github.com/jussikinnula/redux-websocket#readme",
+  "homepage": "https://github.com/jussikinnula/redux-websocket",
   "contributors": [
     "Jussi Kinnula <jussi.kinnula@gmail.com>",
     "David Michael <david.michael@giantmachines.com>"
