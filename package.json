@@ -1,0 +1,54 @@
+{
+  "name": "@jussikinnula/redux-websocket",
+  "version": "0.1.0",
+  "description": "A redux middleware to handle websocket connections",
+  "author": "Jussi Kinnula",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jussikinnula/redux-websocket/issues"
+  },
+  "homepage": "https://github.com/jussikinnula/redux-websocket#readme",
+  "contributors": [
+    "Jussi Kinnula <jussi.kinnula@gmail.com>",
+    "David Michael <david.michael@giantmachines.com>"
+  ],
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jussikinnula/redux-websocket"
+  },
+  "engines": {
+    "node": "^8.11.3",
+    "npm": "^6.4.1"
+  },
+  "scripts": {
+    "prebuild": "npm run clean && npm run lint",
+    "build": "tsc --project ./tsconfig.json --outDir ./lib --declaration",
+    "clean": "rimraf ./lib",
+    "lint": "tslint --project ./tsconfig.json"
+  },
+  "keywords": [
+    "redux"
+  ],
+  "dependencies": {
+    "@types/lodash": "^4.14.118",
+    "lodash": "^4.17.11"
+  },
+  "peerDependencies": {
+    "@types/ws": "^6.0.1",
+    "redux": "^4.0.1",
+    "typescript-fsa": "^3.0.0-beta-2",
+    "ws": "^6.1.0"
+  },
+  "devDependencies": {
+    "@types/ws": "^6.0.1",
+    "redux": "^4.0.1",
+    "rimraf": "^2.6.2",
+    "tslint": "^5.11.0",
+    "tslint-config-airbnb": "^5.11.0",
+    "typescript": "^3.1.6",
+    "typescript-fsa": "^3.0.0-beta-2",
+    "ws": "^6.1.0"
+  }
+}
