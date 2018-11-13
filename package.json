@@ -1,6 +1,6 @@
 {
   "name": "@jussikinnula/redux-websocket",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "A redux middleware to handle websocket connections",
   "author": "Jussi Kinnula",
   "license": "MIT",

@@ -15,9 +15,9 @@ export * from './ConnectOptions';
 export * from './DisconnectOptions';
 
 const createMiddleware = (): Middleware => store => next => action => {
-  if (isType(action, websocketConnectAction)) initialize(store.dispatch, action.payload);
-  else if (isType(action, websocketDisconnectAction)) close(action.payload);
-  else if (isType(action, websocketSendAction)) send(action.payload);
+  if (action && isType(action, websocketConnectAction)) initialize(store.dispatch, action.payload);
+  else if (action && isType(action, websocketDisconnectAction)) close(action.payload);
+  else if (action && isType(action, websocketSendAction)) send(action.payload);
   next(action);
 };
 
