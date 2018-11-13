@@ -1,7 +1,12 @@
 import { compose } from 'redux';
 import { Config } from './config';
 import close from './close';
-import * as actions from './actions';
+import {
+  websocketConnectingAction,
+  websocketOpenAction,
+  websocketClosedAction,
+  websocketMessageAction,
+} from './actions';
 import { createConnection } from './websocket';
 
 export default (dispatch: Function, config: Config) => {
@@ -12,11 +17,11 @@ export default (dispatch: Function, config: Config) => {
   const websocket = createConnection(config);
 
   // Send connecting information
-  dispatch(actions.connecting())
+  dispatch(websocketConnectingAction());
 
   // Setup handlers to be called like this:
   // dispatch(open(event));
-  websocket.onopen = () => dispatch(actions.open);
-  websocket.onclose = () => dispatch(actions.closed);
-  websocket.onmessage = () => dispatch(actions.message);
+  websocket.onopen = () => dispatch(websocketOpenAction);
+  websocket.onclose = () => dispatch(websocketClosedAction);
+  websocket.onmessage = () => dispatch(websocketMessageAction);
 };

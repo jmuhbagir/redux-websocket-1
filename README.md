@@ -36,21 +36,22 @@ const store = createStore(
 
 ### Middleware dispatched actions
 
-```typescript
-import { connecting, open, close, message } from '@jussikinnula/redux-websocket';
-```
-
-- `connecting` action is dispatched by the middleware, when WebSocket connection is initialized
-- `open` action is dispatched by the middleware, when WebSocket connection is opened
-- `close` action is dispatched by the middleware when WebSocket connection closes
-- `message` action is dispathed by the middleware when there's an incoming message
+- `websocketConnectingAction` action is dispatched by the middleware, when WebSocket connection is initialized
+- `websocketOpenAction` action is dispatched by the middleware, when WebSocket connection is opened
+- `websocketCloseAction` action is dispatched by the middleware when WebSocket connection closes
+- `websocketMessageAction` action is dispathed by the middleware when there's an incoming message
 
 You can create a reducer to act accordingly when these actions are dispatched:
 
 ```typescript
 import { Action } from 'redux';
 import { isType } from 'typescript-fsa';
-import { connecting, open, message, closed } from '@jussikinnula/redux-websocket';
+import {
+  websocketConnectingAction,
+  websocketOpenAction,
+  websocketMessageAction,
+  websocketCloseAction,
+} from '@jussikinnula/redux-websocket';
 
 interface State {
   connected: boolean;
@@ -61,21 +62,21 @@ interface State {
 const initialState: State = {
   connected: false,
   connecting: false,
-  messages: []
+  messages: [],
 };
 
 const reducer = (state: State = initialState, action: Action): State => {
-  if (isType(action, connecting)) {
+  if (isType(action, websocketConnectingAction)) {
     return { ...state, connected: false, connecting: true };
   }
-  if (isType(action, open)) {
+  if (isType(action, websocketOpenAction)) {
     return { ...state, connected: true, connecting: false };
   }
-  if (isType(action, message)) {
+  if (isType(action, websocketMessageAction)) {
     const messages = state.messages.concat(message);
     return { ...state, messages };
   }
-  if (isType(action, closed)) {
+  if (isType(action, websocketCloseAction)) {
     return initialState;
   }
   return state;
@@ -87,7 +88,12 @@ Alternatively you can use `typescript-fsa-reducers` to implement reducers:
 ```typescript
 import { Action } from 'redux';
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
-import { connecting, open, message, closed } from '@jussikinnula/redux-websocket';
+import {
+  websocketConnectingAction,
+  websocketOpenAction,
+  websocketMessageAction,
+  websocketCloseAction,
+} from '@jussikinnula/redux-websocket';
 
 interface State {
   connected: boolean;
@@ -98,14 +104,14 @@ interface State {
 const initialState: State = {
   connected: false,
   connecting: false,
-  messages: []
+  messages: [],
 };
 
 const reducer = reducerWithInitialState(initialState)
-  .case(connecting, state => ({ ...state, connected: false, connecting: true }))
-  .case(open, state => ({ ...state, connected: true, connecting: false }))
-  .case(message, (state, payload) => ({ ...state, messages: [...state.messages, message] }))
-  .case(closed, () => initialState);
+  .case(websocketConnectingAction, state => ({ ...state, connected: false, connecting: true }))
+  .case(websocketOpenAction, state => ({ ...state, connected: true, connecting: false }))
+  .case(websocketMessageAction, (state, payload) => ({ ...state, messages: [...state.messages, message] }))
+  .case(websocketCloseAction, () => initialState);
 ```
 
 ### User dispatched actions
@@ -113,17 +119,21 @@ const reducer = reducerWithInitialState(initialState)
 While the actions described above were dispatched by the middleware, you can dispatch the following actions to initialize connection, send a message and disconnect:
 
 ```typescript
-import { connect, send, disconnect } from '@jussikinnula/redux-websocket';
+import {
+  websocketConnectAction,
+  websocketSendAction,
+  websocketDisconnectAction,
+} from '@jussikinnula/redux-websocket';
 
 // Start connection
-store.dispatch(connect({
-  url: 'ws://localhost:1234'
-  binaryType: 'arraybuffer'
+store.dispatch(websocketConnectAction({
+  url: 'ws://localhost:1234',
+  binaryType: 'arraybuffer',
 }));
 
 // Send message
-store.dispatch(send('Hello World!'));
+store.dispatch(websocketSendAction('Hello World!'));
 
 // Close connection
-store.dispatch(disconnect());
+store.dispatch(websocketDisconnectAction());
 ```
