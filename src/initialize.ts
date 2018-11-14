@@ -1,5 +1,4 @@
 import { compose } from 'redux';
-import { partial } from 'lodash';
 import { Config } from './Config';
 import close from './close';
 import {
@@ -20,12 +19,9 @@ export default (dispatch: Function, config: Config) => {
   // Send connecting information
   dispatch(websocketConnectingAction());
 
-  // Function will dispatch actions returned from action creators.
-  const dispatchAction = partial(compose, dispatch);
-
   // Setup handlers to be called like this:
   // dispatch(open(event));
-  websocket.onopen = dispatchAction(websocketOpenAction);
-  websocket.onclose = dispatchAction(websocketClosedAction);
-  websocket.onmessage = dispatchAction(websocketMessageAction);
+  websocket.onopen = event => dispatch(websocketOpenAction(event));
+  websocket.onclose = event => dispatch(websocketClosedAction(event));
+  websocket.onmessage = event => dispatch(websocketMessageAction(event));
 };
