@@ -1,4 +1,4 @@
-import { Middleware } from 'redux';
+import { Middleware, Dispatch } from 'redux';
 import { isType } from 'typescript-fsa';
 import {
   websocketClosedAction,
@@ -16,11 +16,11 @@ export * from './actions';
 export * from './ConnectOptions';
 export * from './DisconnectOptions';
 
-const createMiddleware = (): Middleware => store => next => action => {
+const createMiddleware = (): Middleware => {
   // Store WebSocket instance here
   let websocket: WebSocket;
 
-  function initialize(options: ConnectOptions) {
+  function initialize(dispatch: Dispatch, options: ConnectOptions) {
     // Close connection first (if exists)
     if (websocket) close({ notifyOnClose: false });
 
@@ -31,13 +31,13 @@ const createMiddleware = (): Middleware => store => next => action => {
     if (binaryType) websocket.binaryType = binaryType;
 
     // Send connecting information
-    store.dispatch(websocketConnectingAction());
+    dispatch(websocketConnectingAction());
 
     // Setup handlers to be called like this:
     // dispatch(open(event));
-    websocket.onopen = event => store.dispatch(websocketOpenAction(event));
-    websocket.onclose = event => store.dispatch(websocketClosedAction(event));
-    websocket.onmessage = event => store.dispatch(websocketMessageAction(event));
+    websocket.onopen = event => dispatch(websocketOpenAction(event));
+    websocket.onclose = event => dispatch(websocketClosedAction(event));
+    websocket.onmessage = event => dispatch(websocketMessageAction(event));
   }
 
   function close(options: DisconnectOptions) {
@@ -60,10 +60,12 @@ const createMiddleware = (): Middleware => store => next => action => {
     }
   }
 
-  if (action && isType(action, websocketConnectAction)) initialize(action.payload);
-  else if (action && isType(action, websocketDisconnectAction)) close(action.payload);
-  else if (action && isType(action, websocketSendAction)) send(action.payload);
-  next(action);
+  return store => next => action => {
+    if (action && isType(action, websocketConnectAction)) initialize(store.dispatch, action.payload);
+    else if (action && isType(action, websocketDisconnectAction)) close(action.payload);
+    else if (action && isType(action, websocketSendAction)) send(action.payload);
+    next(action);
+  };
 };
 
 export default createMiddleware();
