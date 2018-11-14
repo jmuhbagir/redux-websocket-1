@@ -17,11 +17,11 @@ export default (dispatch: Function, config: Config) => {
   // Instantiate the websocket.
   const websocket = createConnection(config);
 
+  // Send connecting information
+  dispatch(websocketConnectingAction());
+
   // Function will dispatch actions returned from action creators.
   const dispatchAction = partial(compose, [dispatch]);
-
-  // Send connecting information
-  dispatchAction(websocketConnectingAction());
 
   // Setup handlers to be called like this:
   // dispatch(open(event));
