@@ -21,7 +21,7 @@ export default (dispatch: Function, config: Config) => {
   dispatch(websocketConnectingAction());
 
   // Function will dispatch actions returned from action creators.
-  const dispatchAction = partial(compose, [dispatch]);
+  const dispatchAction = partial(compose, dispatch);
 
   // Setup handlers to be called like this:
   // dispatch(open(event));
