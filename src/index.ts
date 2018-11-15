@@ -20,15 +20,21 @@ const createMiddleware = (): Middleware => {
   // Store WebSocket instance here
   let websocket: WebSocket;
 
-  function initialize(dispatch: Dispatch, options: ConnectOptions) {
+  // Stored config
+  let websocketConfig: ConnectOptions;
+
+  function handleConnect(dispatch: Dispatch, options: ConnectOptions) {
     // Close connection first (if exists)
-    if (websocket) close({ notifyOnClose: false });
+    if (websocket) handleClose({ notifyOnClose: false });
 
     // Instantiate the websocket.
     const { url, args, binaryType } = options;
     if (!url) throw new Error('Cannot create WebSocket instance: no URL set');
     websocket = new WebSocket(url, ...args);
     if (binaryType) websocket.binaryType = binaryType;
+
+    // Store configuration
+    websocketConfig = options;
 
     // Send connecting information
     dispatch(websocketConnectingAction());
@@ -40,7 +46,7 @@ const createMiddleware = (): Middleware => {
     websocket.onmessage = event => dispatch(websocketMessageAction(event));
   }
 
-  function close(options: DisconnectOptions) {
+  function handleClose(options: DisconnectOptions) {
     const { notifyOnClose } = options;
     if (websocket) {
       if (!notifyOnClose) {
@@ -52,7 +58,7 @@ const createMiddleware = (): Middleware => {
     }
   }
 
-  function send(message: any) {
+  function handleSend(message: any) {
     if (websocket) {
       websocket.send(JSON.stringify(message));
     } else {
@@ -60,10 +66,28 @@ const createMiddleware = (): Middleware => {
     }
   }
 
+  let attempts = 1;
+  function handleOpen() {
+    attempts = 1;
+  }
+
+  const generateInterval = (k: number) => Math.min(30, (Math.pow(2, k) - 1)) * 1000;
+  function handleClosed(dispatch: Dispatch) {
+    if (!websocketConfig || !websocketConfig.autoReconnect) return;
+    const time = generateInterval(attempts);
+    const retryAttempt = () => {
+      attempts += 1;
+      handleConnect(dispatch, websocketConfig);
+    };
+    setTimeout(retryAttempt, time);
+  }
+
   return store => next => action => {
-    if (action && isType(action, websocketConnectAction)) initialize(store.dispatch, action.payload);
-    else if (action && isType(action, websocketDisconnectAction)) close(action.payload);
-    else if (action && isType(action, websocketSendAction)) send(action.payload);
+    if (isType(action, websocketConnectAction)) handleConnect(store.dispatch, action.payload);
+    else if (isType(action, websocketDisconnectAction)) handleClose(action.payload);
+    else if (isType(action, websocketSendAction)) handleSend(action.payload);
+    else if (isType(action, websocketOpenAction)) handleOpen();
+    else if (isType(action, websocketClosedAction)) handleClosed(store.dispatch);
     next(action);
   };
 };

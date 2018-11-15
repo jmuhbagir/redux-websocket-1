@@ -1,5 +1,6 @@
 export interface ConnectOptions {
   url?: string;
-  binaryType?: 'arraybuffer' | 'blob';
+  binaryType?: 'blob' | 'arraybuffer';
   args?: any[];
+  autoReconnect?: boolean;
 }

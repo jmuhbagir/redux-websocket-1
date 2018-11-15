@@ -127,8 +127,9 @@ import {
 
 // Start connection
 store.dispatch(websocketConnectAction({
-  url: 'ws://localhost:1234',
-  binaryType: 'arraybuffer',
+  url: 'ws://localhost:1234', // required, url: string
+  binaryType: 'arraybuffer', // default = 'blob', binaryType: 'blob' | 'arraybuffer'
+  autoReconnect: true, // default = false, autoReconnect: boolean
 }));
 
 // Send message
