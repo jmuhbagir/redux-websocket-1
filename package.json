@@ -1,6 +1,6 @@
 {
   "name": "@jussikinnula/redux-websocket",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "A redux middleware to handle websocket connections",
   "author": "Jussi Kinnula",
   "license": "MIT",
@@ -17,10 +17,6 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jussikinnula/redux-websocket"
-  },
-  "engines": {
-    "node": "^8.11.3",
-    "npm": "^6.4.1"
   },
   "scripts": {
     "prebuild": "npm run clean && npm run lint",
