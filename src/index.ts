@@ -48,7 +48,7 @@ const createMiddleware = (): Middleware => {
 
   function handleClose(options: DisconnectOptions) {
     const { notifyOnClose } = options;
-    if (websocket) {
+    if (websocket && websocket.url) {
       if (!notifyOnClose) {
         websocket.onclose = null;
       }
